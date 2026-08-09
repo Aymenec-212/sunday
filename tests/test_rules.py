@@ -162,15 +162,32 @@ def test_r004_silent_when_documented() -> None:
 
 def test_r005_fires_on_wide_blast_radius() -> None:
     refs = [_ref("m.f", f"file{i}.py", in_commit=False) for i in range(5)]
-    facts = make_facts(references_to_changed=refs)
+    facts = make_facts(
+        signature_changes=[_sig("m.f", defaults_changed=["x"])],
+        references_to_changed=refs,
+    )
     assert [f.rule_id for f in builtin.wide_blast_radius(facts, Config())] == ["R005"]
 
 
+def test_r005_silent_for_newly_added_symbol() -> None:
+    # A brand-new symbol referenced widely in the same commit is not a risk.
+    refs = [_ref("m.new", f"file{i}.py", in_commit=False) for i in range(6)]
+    facts = make_facts(
+        symbols_added=[_sym("m.new", "m.py")],
+        references_to_changed=refs,
+    )
+    assert builtin.wide_blast_radius(facts, Config()) == []
+
+
 def test_r005_silent_below_threshold_or_few_files() -> None:
-    below = make_facts(references_to_changed=[
-        _ref("m.f", f"file{i}.py", in_commit=False) for i in range(2)])
-    many_refs_few_files = make_facts(references_to_changed=[
-        _ref("m.f", "same.py", in_commit=False, lineno=i) for i in range(6)])
+    below = make_facts(
+        signature_changes=[_sig("m.f", defaults_changed=["x"])],
+        references_to_changed=[_ref("m.f", f"file{i}.py", in_commit=False) for i in range(2)],
+    )
+    many_refs_few_files = make_facts(
+        signature_changes=[_sig("m.f", defaults_changed=["x"])],
+        references_to_changed=[_ref("m.f", "same.py", in_commit=False, lineno=i) for i in range(6)],
+    )
     assert builtin.wide_blast_radius(below, Config()) == []
     assert builtin.wide_blast_radius(many_refs_few_files, Config()) == []
 

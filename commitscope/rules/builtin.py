@@ -188,13 +188,19 @@ def undocumented_env_var(facts: Facts, config: Config) -> list[Finding]:
 
 
 def wide_blast_radius(facts: Facts, config: Config) -> list[Finding]:
+    # Blast radius is a concern for symbols that *changed* under callers, not
+    # for brand-new symbols added alongside their own callers in this commit.
+    changed = {c.qualname for c in facts.signature_changes}
+    changed |= {s.qualname for s in facts.symbols_removed}
+
     grouped: dict[str, list[Reference]] = defaultdict(list)
     for ref in facts.references_to_changed:
-        grouped[ref.qualname].append(ref)
+        if ref.qualname in changed:
+            grouped[ref.qualname].append(ref)
 
     findings: list[Finding] = []
     for qualname, refs in grouped.items():
-        files = {r.from_path for r in refs}
+        files = sorted({r.from_path for r in refs})
         if len(refs) < config.blast_threshold or len(files) < 3:
             continue
         short = _short(qualname)
@@ -203,9 +209,9 @@ def wide_blast_radius(facts: Facts, config: Config) -> list[Finding]:
                 "R005",
                 "medium",
                 qualname,
-                f"Wide blast radius: `{short}` is referenced {len(refs)} times "
-                f"across {len(files)} files",
-                sorted(f"{r.from_path}:{r.lineno}" for r in refs),
+                f"Wide blast radius: `{short}` changed and is referenced "
+                f"{len(refs)} times across {len(files)} files",
+                files,
                 [qualname, short, *files],
             )
         )

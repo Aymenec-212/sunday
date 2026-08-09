@@ -56,6 +56,7 @@ All are optional; the tool degrades cleanly when they are unset.
 | `GITHUB_REPOSITORY` | `owner/repo`, supplied by GitHub Actions |
 | `GITHUB_API_URL` | GitHub API base (for GitHub Enterprise) |
 | `GITHUB_STEP_SUMMARY` | Job-summary file path, supplied by GitHub Actions |
+| `COMMITSCOPE_REGEN` | Test-only: regenerate golden fact snapshots |
 
 ## Determinism
 
