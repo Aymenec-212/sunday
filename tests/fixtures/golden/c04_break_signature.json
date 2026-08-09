@@ -1,0 +1,67 @@
+{
+  "author_email": "fixture@commitscope.test",
+  "committed_at": "2026-01-01T00:00:04Z",
+  "deps_added": [],
+  "deps_removed": [],
+  "docs_touched": [],
+  "documented_env_vars": [
+    "DATABASE_URL"
+  ],
+  "env_vars_added": [],
+  "env_vars_removed": [],
+  "facts_hash": "ed4e1b06ac5a3cd2ef92b92af1e6d06ee6fc461392cf10d193e8c7d4898d6790",
+  "files": [
+    {
+      "lines_added": 1,
+      "lines_removed": 1,
+      "old_path": null,
+      "path": "src/core/audio.py",
+      "status": "M"
+    }
+  ],
+  "import_edges_added": [],
+  "import_edges_removed": [],
+  "imported_top_modules": [
+    "src"
+  ],
+  "is_merge": false,
+  "message_subject": "Break chunk_audio signature (R001)",
+  "parent_sha": "2f10f5e8ad94477a398d36453a365ce8d2224397",
+  "references_to_changed": [
+    {
+      "from_path": "src/api/routes.py",
+      "in_this_commit": false,
+      "lineno": 7,
+      "qualname": "src.core.audio.chunk_audio"
+    },
+    {
+      "from_path": "tests/test_audio.py",
+      "in_this_commit": false,
+      "lineno": 5,
+      "qualname": "src.core.audio.chunk_audio"
+    }
+  ],
+  "schema_version": 1,
+  "sha": "9dc914328ee60b229417ab4ae1a2e41fc5b6b7b4",
+  "signature_changes": [
+    {
+      "after": "chunk_audio(path: str, sr: int, normalize: bool) -> list[float]",
+      "before": "chunk_audio(path: str, sr: int = 16000) -> list[float]",
+      "defaults_changed": [
+        "sr"
+      ],
+      "params_added": [
+        "normalize"
+      ],
+      "params_removed": [],
+      "params_without_default_added": [
+        "normalize"
+      ],
+      "qualname": "src.core.audio.chunk_audio",
+      "return_annotation_changed": false
+    }
+  ],
+  "symbols_added": [],
+  "symbols_removed": [],
+  "tests_touched": []
+}

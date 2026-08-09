@@ -1,12 +1,20 @@
+# Operational config: CommitScope pointed at its own repository.
+#
+# The pipeline is a strict one-directional flow. The only cross-stage import
+# edges that are allowed are analyze -> collect (analyzers read git) and
+# publish -> render (publishing renders markdown). Crucially, no stage may
+# import narrate — a layer violation (R003) will flag it if one ever does.
 layers:
-  api: ["src/api/**"]
-  core: ["src/core/**"]
-  infra: ["src/infra/**"]
+  collect: ["commitscope/collect/**"]
+  analyze: ["commitscope/analyze/**"]
+  rules:   ["commitscope/rules/**"]
+  narrate: ["commitscope/narrate/**"]
+  render:  ["commitscope/render/**"]
+  publish: ["commitscope/publish/**"]
 
 allowed_edges:
-  - [api, core]
-  - [api, infra]
-  - [core, infra]
+  - [analyze, collect]
+  - [publish, render]
 
 skip_globs:
   - "docs/**"
@@ -24,11 +32,10 @@ max_lines_changed: 3000
 max_files_indexed: 2000
 
 source_roots:
-  - "src"
+  - "commitscope"
 
 test_patterns:
   - "tests/**"
-  - "test/**"
 
 env_example_paths:
   - ".env.example"

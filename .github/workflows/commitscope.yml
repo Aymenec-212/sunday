@@ -1,0 +1,39 @@
+name: CommitScope
+
+# Observe pushes and post a per-commit analysis. This is an observer, never a
+# gate: the analyzer step is continue-on-error and the CLI always exits 0.
+on:
+  push:
+    paths-ignore:
+      - "**/*.md"
+      - "docs/**"
+
+permissions:
+  contents: write   # required to post commit comments
+
+jobs:
+  commitscope:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5   # backstop to the in-process run timeout
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2   # need the parent commit or every diff fails
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install CommitScope
+        run: pip install -e .
+
+      - name: Analyze pushed commit
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Optional: set this secret to enable the narration layer.
+          COMMITSCOPE_API_KEY: ${{ secrets.COMMITSCOPE_API_KEY }}
+        run: |
+          python -m commitscope.cli run \
+            --sha "${{ github.sha }}" \
+            --publish

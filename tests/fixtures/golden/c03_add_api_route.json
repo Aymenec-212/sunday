@@ -1,0 +1,72 @@
+{
+  "author_email": "fixture@commitscope.test",
+  "committed_at": "2026-01-01T00:00:03Z",
+  "deps_added": [],
+  "deps_removed": [],
+  "docs_touched": [],
+  "documented_env_vars": [
+    "DATABASE_URL"
+  ],
+  "env_vars_added": [],
+  "env_vars_removed": [],
+  "facts_hash": "60ee71a8a3c5da0307ee74a5f875ada2721a02763d92205c3397d376747cb6dc",
+  "files": [
+    {
+      "lines_added": 7,
+      "lines_removed": 0,
+      "old_path": null,
+      "path": "src/api/pipeline.py",
+      "status": "A"
+    },
+    {
+      "lines_added": 7,
+      "lines_removed": 0,
+      "old_path": null,
+      "path": "src/api/routes.py",
+      "status": "A"
+    }
+  ],
+  "import_edges_added": [
+    {
+      "from_layer": "api",
+      "from_module": "src.api.pipeline",
+      "to_layer": "core",
+      "to_module": "src.core.audio"
+    },
+    {
+      "from_layer": "api",
+      "from_module": "src.api.routes",
+      "to_layer": "core",
+      "to_module": "src.core.audio"
+    }
+  ],
+  "import_edges_removed": [],
+  "imported_top_modules": [
+    "src"
+  ],
+  "is_merge": false,
+  "message_subject": "Add API route calling chunk_audio",
+  "parent_sha": "ae306603cd7f6355f56e23a39dd5a34a5500dc0b",
+  "references_to_changed": [],
+  "schema_version": 1,
+  "sha": "2f10f5e8ad94477a398d36453a365ce8d2224397",
+  "signature_changes": [],
+  "symbols_added": [
+    {
+      "is_public": true,
+      "kind": "function",
+      "lineno": 6,
+      "path": "src/api/pipeline.py",
+      "qualname": "src.api.pipeline.run"
+    },
+    {
+      "is_public": true,
+      "kind": "function",
+      "lineno": 6,
+      "path": "src/api/routes.py",
+      "qualname": "src.api.routes.process_upload"
+    }
+  ],
+  "symbols_removed": [],
+  "tests_touched": []
+}

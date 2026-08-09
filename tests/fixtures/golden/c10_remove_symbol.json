@@ -1,0 +1,53 @@
+{
+  "author_email": "fixture@commitscope.test",
+  "committed_at": "2026-01-01T00:00:10Z",
+  "deps_added": [],
+  "deps_removed": [],
+  "docs_touched": [],
+  "documented_env_vars": [
+    "DATABASE_URL"
+  ],
+  "env_vars_added": [],
+  "env_vars_removed": [],
+  "facts_hash": "979b1f003f3826a4c9ece788ca38292b363b9bcdf3f6c76aa777aaa878f628b7",
+  "files": [
+    {
+      "lines_added": 0,
+      "lines_removed": 4,
+      "old_path": null,
+      "path": "src/core/audio.py",
+      "status": "M"
+    }
+  ],
+  "import_edges_added": [],
+  "import_edges_removed": [],
+  "imported_top_modules": [
+    "os",
+    "src"
+  ],
+  "is_merge": false,
+  "message_subject": "Remove public symbol with external refs (R002)",
+  "parent_sha": "48188ab5021b24179b9779cb386e7e2dbf5b9f4c",
+  "references_to_changed": [
+    {
+      "from_path": "src/api/pipeline.py",
+      "in_this_commit": false,
+      "lineno": 7,
+      "qualname": "src.core.audio.normalize_audio"
+    }
+  ],
+  "schema_version": 1,
+  "sha": "7ef6fb28c0860b3fe23ed2fc440c46ae0dbc67f2",
+  "signature_changes": [],
+  "symbols_added": [],
+  "symbols_removed": [
+    {
+      "is_public": true,
+      "kind": "function",
+      "lineno": 9,
+      "path": "src/core/audio.py",
+      "qualname": "src.core.audio.normalize_audio"
+    }
+  ],
+  "tests_touched": []
+}

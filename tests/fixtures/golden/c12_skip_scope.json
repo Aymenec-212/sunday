@@ -1,0 +1,39 @@
+{
+  "author_email": "fixture@commitscope.test",
+  "committed_at": "2026-01-01T00:00:12Z",
+  "deps_added": [],
+  "deps_removed": [],
+  "docs_touched": [],
+  "documented_env_vars": [
+    "API",
+    "DATABASE_URL"
+  ],
+  "env_vars_added": [],
+  "env_vars_removed": [],
+  "facts_hash": "a5e94b4280513446055e720dea0135f6cc52dc920463cb960d922c8812e99013",
+  "files": [
+    {
+      "lines_added": 1,
+      "lines_removed": 1,
+      "old_path": null,
+      "path": "src/core/audio.py",
+      "status": "M"
+    }
+  ],
+  "import_edges_added": [],
+  "import_edges_removed": [],
+  "imported_top_modules": [
+    "os",
+    "src"
+  ],
+  "is_merge": false,
+  "message_subject": "[skip scope] formatting tweak",
+  "parent_sha": "401e94348ce35ab5b99b7de6ad1e1e46d7ad5258",
+  "references_to_changed": [],
+  "schema_version": 1,
+  "sha": "65ea18946e95f2eccfc665c1afdcb959573df4a3",
+  "signature_changes": [],
+  "symbols_added": [],
+  "symbols_removed": [],
+  "tests_touched": []
+}

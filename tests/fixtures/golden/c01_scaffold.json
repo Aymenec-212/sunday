@@ -1,0 +1,129 @@
+{
+  "author_email": "fixture@commitscope.test",
+  "committed_at": "2026-01-01T00:00:01Z",
+  "deps_added": [
+    "requests"
+  ],
+  "deps_removed": [],
+  "docs_touched": [
+    "ARCHITECTURE.md",
+    "README.md"
+  ],
+  "documented_env_vars": [
+    "DATABASE_URL"
+  ],
+  "env_vars_added": [],
+  "env_vars_removed": [],
+  "facts_hash": "d34e22fa9bd843b7470330c097a237fd4ac32446911202b475b051e93a7e794b",
+  "files": [
+    {
+      "lines_added": 1,
+      "lines_removed": 0,
+      "old_path": null,
+      "path": ".env.example",
+      "status": "A"
+    },
+    {
+      "lines_added": 5,
+      "lines_removed": 0,
+      "old_path": null,
+      "path": "ARCHITECTURE.md",
+      "status": "A"
+    },
+    {
+      "lines_added": 3,
+      "lines_removed": 0,
+      "old_path": null,
+      "path": "README.md",
+      "status": "A"
+    },
+    {
+      "lines_added": 1,
+      "lines_removed": 0,
+      "old_path": null,
+      "path": "requirements.txt",
+      "status": "A"
+    },
+    {
+      "lines_added": 0,
+      "lines_removed": 0,
+      "old_path": null,
+      "path": "src/api/__init__.py",
+      "status": "A"
+    },
+    {
+      "lines_added": 0,
+      "lines_removed": 0,
+      "old_path": null,
+      "path": "src/core/__init__.py",
+      "status": "A"
+    },
+    {
+      "lines_added": 5,
+      "lines_removed": 0,
+      "old_path": null,
+      "path": "src/core/audio.py",
+      "status": "A"
+    },
+    {
+      "lines_added": 0,
+      "lines_removed": 0,
+      "old_path": null,
+      "path": "src/infra/__init__.py",
+      "status": "A"
+    },
+    {
+      "lines_added": 5,
+      "lines_removed": 0,
+      "old_path": null,
+      "path": "tests/test_audio.py",
+      "status": "A"
+    }
+  ],
+  "import_edges_added": [
+    {
+      "from_layer": null,
+      "from_module": "tests.test_audio",
+      "to_layer": "core",
+      "to_module": "src.core.audio"
+    }
+  ],
+  "import_edges_removed": [],
+  "imported_top_modules": [
+    "src"
+  ],
+  "is_merge": false,
+  "message_subject": "Initial project scaffold",
+  "parent_sha": "",
+  "references_to_changed": [
+    {
+      "from_path": "tests/test_audio.py",
+      "in_this_commit": true,
+      "lineno": 5,
+      "qualname": "src.core.audio.chunk_audio"
+    }
+  ],
+  "schema_version": 1,
+  "sha": "e48e69a417045858428bdf7c4229847a17b3caf6",
+  "signature_changes": [],
+  "symbols_added": [
+    {
+      "is_public": true,
+      "kind": "function",
+      "lineno": 4,
+      "path": "src/core/audio.py",
+      "qualname": "src.core.audio.chunk_audio"
+    },
+    {
+      "is_public": true,
+      "kind": "function",
+      "lineno": 4,
+      "path": "tests/test_audio.py",
+      "qualname": "tests.test_audio.test_chunk_audio"
+    }
+  ],
+  "symbols_removed": [],
+  "tests_touched": [
+    "tests/test_audio.py"
+  ]
+}
