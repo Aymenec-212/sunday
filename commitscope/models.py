@@ -74,6 +74,11 @@ class Facts(BaseModel):
     docs_touched: list[str]
     tests_touched: list[str]
 
+    # Derived tree-wide inputs the pure rules need but cannot read for
+    # themselves (rules do no I/O). Both are sorted at assembly time.
+    documented_env_vars: list[str] = []
+    imported_top_modules: list[str] = []
+
     facts_hash: str = ""
 
     def compute_hash(self) -> str:

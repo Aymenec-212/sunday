@@ -1,0 +1,45 @@
+{
+  "author_email": "fixture@commitscope.test",
+  "committed_at": "2026-01-01T00:00:02Z",
+  "deps_added": [],
+  "deps_removed": [],
+  "docs_touched": [],
+  "documented_env_vars": [
+    "DATABASE_URL"
+  ],
+  "env_vars_added": [],
+  "env_vars_removed": [],
+  "facts_hash": "b116906207ca505875fde35a55a8b089d3cae0ee77432ce56871cf810aeb56f2",
+  "files": [
+    {
+      "lines_added": 5,
+      "lines_removed": 0,
+      "old_path": null,
+      "path": "src/core/audio.py",
+      "status": "M"
+    }
+  ],
+  "import_edges_added": [],
+  "import_edges_removed": [],
+  "imported_top_modules": [
+    "src"
+  ],
+  "is_merge": false,
+  "message_subject": "Add chunk_audio to core",
+  "parent_sha": "e48e69a417045858428bdf7c4229847a17b3caf6",
+  "references_to_changed": [],
+  "schema_version": 1,
+  "sha": "ae306603cd7f6355f56e23a39dd5a34a5500dc0b",
+  "signature_changes": [],
+  "symbols_added": [
+    {
+      "is_public": true,
+      "kind": "function",
+      "lineno": 9,
+      "path": "src/core/audio.py",
+      "qualname": "src.core.audio.normalize_audio"
+    }
+  ],
+  "symbols_removed": [],
+  "tests_touched": []
+}

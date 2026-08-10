@@ -37,18 +37,17 @@ class Config(BaseModel):
     def resolve_layer(self, path: str) -> str | None:
         normalized = path.replace("\\", "/")
         for layer_name, patterns in sorted(self.layers.items()):
-            for pattern in patterns:
-                if fnmatch(normalized, pattern):
-                    return layer_name
+            if any(_glob_match(normalized, pattern) for pattern in patterns):
+                return layer_name
         return None
 
     def is_skipped_path(self, path: str) -> bool:
         normalized = path.replace("\\", "/")
-        return any(fnmatch(normalized, pattern) for pattern in self.skip_globs)
+        return any(_glob_match(normalized, pattern) for pattern in self.skip_globs)
 
     def is_test_path(self, path: str) -> bool:
         normalized = path.replace("\\", "/")
-        return any(fnmatch(normalized, pattern) for pattern in self.test_patterns)
+        return any(_glob_match(normalized, pattern) for pattern in self.test_patterns)
 
     def is_source_path(self, path: str) -> bool:
         normalized = path.replace("\\", "/")
@@ -56,6 +55,23 @@ class Config(BaseModel):
             normalized == root or normalized.startswith(f"{root}/")
             for root in self.source_roots
         )
+
+
+def _glob_match(path: str, pattern: str) -> bool:
+    """Glob match with ``**`` globstar semantics that ``fnmatch`` lacks.
+
+    ``**/*.md`` also matches a root-level ``README.md``; ``docs/**`` matches the
+    directory itself and everything beneath it.
+    """
+    if fnmatch(path, pattern):
+        return True
+    if pattern.startswith("**/") and fnmatch(path, pattern[3:]):
+        return True
+    if pattern.endswith("/**"):
+        base = pattern[:-3]
+        if path == base or path.startswith(f"{base}/"):
+            return True
+    return False
 
 
 def load_config(path: Path | None = None) -> Config:

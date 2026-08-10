@@ -1,0 +1,46 @@
+{
+  "author_email": "fixture@commitscope.test",
+  "committed_at": "2026-01-01T00:00:09Z",
+  "deps_added": [],
+  "deps_removed": [],
+  "docs_touched": [],
+  "documented_env_vars": [
+    "DATABASE_URL"
+  ],
+  "env_vars_added": [],
+  "env_vars_removed": [],
+  "facts_hash": "a141ca7e3e8608cff406655886bc6dfb86b4432ee628bf512096d361a57193ff",
+  "files": [
+    {
+      "lines_added": 5,
+      "lines_removed": 0,
+      "old_path": null,
+      "path": "src/core/audio.py",
+      "status": "M"
+    }
+  ],
+  "import_edges_added": [],
+  "import_edges_removed": [],
+  "imported_top_modules": [
+    "os",
+    "src"
+  ],
+  "is_merge": false,
+  "message_subject": "Add public helper without tests (R008)",
+  "parent_sha": "10c8fa9a66984975bb40551361077759efac406d",
+  "references_to_changed": [],
+  "schema_version": 1,
+  "sha": "48188ab5021b24179b9779cb386e7e2dbf5b9f4c",
+  "signature_changes": [],
+  "symbols_added": [
+    {
+      "is_public": true,
+      "kind": "function",
+      "lineno": 13,
+      "path": "src/core/audio.py",
+      "qualname": "src.core.audio.resample_audio"
+    }
+  ],
+  "symbols_removed": [],
+  "tests_touched": []
+}

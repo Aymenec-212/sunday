@@ -1,0 +1,44 @@
+# Config for the generated sample repo used in tests (see build_repo.py).
+# The fixture uses a classic src/ layout with api/core/infra layers.
+layers:
+  api: ["src/api/**"]
+  core: ["src/core/**"]
+  infra: ["src/infra/**"]
+
+allowed_edges:
+  - [api, core]
+  - [api, infra]
+  - [core, infra]
+
+skip_globs:
+  - "docs/**"
+  - "**/*.md"
+  - "**/package-lock.json"
+  - "**/poetry.lock"
+  - "vendor/**"
+  - "**/*.ipynb"
+
+skip_merge_commits: true
+
+blast_threshold: 5
+max_files_changed: 100
+max_lines_changed: 3000
+max_files_indexed: 2000
+
+source_roots:
+  - "src"
+
+test_patterns:
+  - "tests/**"
+  - "test/**"
+
+env_example_paths:
+  - ".env.example"
+
+doc_paths:
+  - "README.md"
+  - "ARCHITECTURE.md"
+
+architecture_doc: "ARCHITECTURE.md"
+
+run_timeout_seconds: 90

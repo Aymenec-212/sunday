@@ -1,0 +1,40 @@
+{
+  "author_email": "fixture@commitscope.test",
+  "committed_at": "2026-01-01T00:00:07Z",
+  "deps_added": [
+    "pandas"
+  ],
+  "deps_removed": [],
+  "docs_touched": [],
+  "documented_env_vars": [
+    "DATABASE_URL"
+  ],
+  "env_vars_added": [],
+  "env_vars_removed": [],
+  "facts_hash": "fb9ddab2136c415d68ee311c56341aa11c7b044c0fab4e4bd44039609bef0511",
+  "files": [
+    {
+      "lines_added": 1,
+      "lines_removed": 0,
+      "old_path": null,
+      "path": "requirements.txt",
+      "status": "M"
+    }
+  ],
+  "import_edges_added": [],
+  "import_edges_removed": [],
+  "imported_top_modules": [
+    "os",
+    "src"
+  ],
+  "is_merge": false,
+  "message_subject": "Add unimported dependency (R006)",
+  "parent_sha": "0f998b9a67b01d6645b758c4c385e71aff211a57",
+  "references_to_changed": [],
+  "schema_version": 1,
+  "sha": "c237ea11eeae0342f69c842af830eb63c49d4b5c",
+  "signature_changes": [],
+  "symbols_added": [],
+  "symbols_removed": [],
+  "tests_touched": []
+}
