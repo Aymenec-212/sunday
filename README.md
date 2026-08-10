@@ -58,6 +58,42 @@ All are optional; the tool degrades cleanly when they are unset.
 | `GITHUB_STEP_SUMMARY` | Job-summary file path, supplied by GitHub Actions |
 | `COMMITSCOPE_REGEN` | Test-only: regenerate golden fact snapshots |
 
+## Use it on any Python repo (GitHub Action)
+
+CommitScope is packaged as a reusable composite Action, so any repository can
+run it on every push without copying code in. Add one workflow:
+
+```yaml
+# .github/workflows/commitscope.yml
+name: CommitScope
+on:
+  push:
+    paths-ignore: ["**/*.md"]
+permissions:
+  contents: write            # only needed if publish: true
+jobs:
+  commitscope:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2      # the parent commit is required for diffing
+      - uses: aymenec-212/sunday@main
+        with:
+          api-key: ${{ secrets.COMMITSCOPE_API_KEY }}   # optional (narration)
+```
+
+That's it — **no `commitscope.yaml` required.** Source roots and test
+directories are auto-detected from the repo tree, so R001/R002/R004–R008 work
+out of the box. The architecture rule (R003) stays off until you *declare* your
+layers, because architecture can't be inferred — add a `commitscope.yaml` with
+a `layers` map and `allowed_edges` to switch it on (see `commitscope.yaml` in
+this repo for an example).
+
+Action inputs: `sha`, `repo`, `config`, `publish`, `no-llm`, `strict`,
+`output`, `python-version`, `api-key`, `github-token` — all optional with
+sensible defaults.
+
 ## Determinism
 
 - Every list on `Facts` is sorted by a documented key before the model is

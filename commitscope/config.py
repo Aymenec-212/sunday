@@ -10,16 +10,32 @@ from pydantic import BaseModel, Field, field_validator
 
 
 class Config(BaseModel):
+    # Layers are the one thing that cannot be inferred — architecture must be
+    # declared, so an undeclared repo simply has R003 off. Everything else has
+    # a sensible zero-config default so CommitScope works on any Python repo.
     layers: dict[str, list[str]] = Field(default_factory=dict)
     allowed_edges: list[tuple[str, str]] = Field(default_factory=list)
-    skip_globs: list[str] = Field(default_factory=list)
+    skip_globs: list[str] = Field(
+        default_factory=lambda: [
+            "docs/**",
+            "**/*.md",
+            "**/package-lock.json",
+            "**/poetry.lock",
+            "**/*.lock",
+            "vendor/**",
+            "**/*.ipynb",
+        ]
+    )
     skip_merge_commits: bool = True
     blast_threshold: int = 5
     max_files_changed: int = 100
     max_lines_changed: int = 3000
     max_files_indexed: int = 2000
-    source_roots: list[str] = Field(default_factory=lambda: ["src"])
-    test_patterns: list[str] = Field(default_factory=lambda: ["tests/**"])
+    # Empty means "auto-detect from the repo tree at run time" (see pipeline).
+    source_roots: list[str] = Field(default_factory=list)
+    test_patterns: list[str] = Field(
+        default_factory=lambda: ["tests/**", "test/**", "**/test_*.py", "**/*_test.py"]
+    )
     env_example_paths: list[str] = Field(default_factory=lambda: [".env.example"])
     doc_paths: list[str] = Field(
         default_factory=lambda: ["README.md", "ARCHITECTURE.md"]
@@ -51,10 +67,12 @@ class Config(BaseModel):
 
     def is_source_path(self, path: str) -> bool:
         normalized = path.replace("\\", "/")
-        return any(
-            normalized == root or normalized.startswith(f"{root}/")
-            for root in self.source_roots
-        )
+        for root in self.source_roots:
+            if root in ("", "."):  # flat layout: the repo root is the source root
+                return True
+            if normalized == root or normalized.startswith(f"{root}/"):
+                return True
+        return False
 
 
 def _glob_match(path: str, pattern: str) -> bool:

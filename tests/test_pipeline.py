@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 from commitscope.collect.git import GitRepo
 from commitscope.config import Config
 from commitscope.models import CommitData, FileChange
-from commitscope.pipeline import run_commit, skip_reason
+from commitscope.pipeline import detect_source_roots, run_commit, skip_reason
 
 
 def _commit(**overrides) -> CommitData:
@@ -73,3 +73,27 @@ def test_run_commit_skips_marked_commit(
     result = run_commit(git, shas["c12_skip_scope"], project_config)
     assert result.skipped
     assert "Skipped" in result.report
+
+
+def test_detect_source_roots_src_layout() -> None:
+    files = [
+        "src/api/routes.py", "src/core/audio.py", "tests/test_audio.py",
+        "docs/guide.py", "README.md",
+    ]
+    assert detect_source_roots(files, Config()) == ["src"]
+
+
+def test_detect_source_roots_flat_and_package_layouts() -> None:
+    assert detect_source_roots(["cli.py", "utils.py"], Config()) == ["."]
+    assert detect_source_roots(
+        ["myapp/__init__.py", "myapp/core.py", "tests/test_x.py"], Config()
+    ) == ["myapp"]
+
+
+def test_zero_config_run_still_detects_test_gap(
+    git_repo: tuple[GitRepo, dict[str, str]]
+) -> None:
+    # No layers, no source_roots configured -> R008 still fires via detection.
+    git, shas = git_repo
+    result = run_commit(git, shas["c09_test_gap"], Config())
+    assert any(f.rule_id == "R008" for f in result.findings)

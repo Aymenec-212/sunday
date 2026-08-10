@@ -232,18 +232,20 @@ def test_r007_silent_when_arch_updated_or_no_edges() -> None:
 
 
 def test_r008_fires_for_new_public_symbol_without_tests() -> None:
+    config = Config(source_roots=["src"])
     facts = make_facts(symbols_added=[_sym("src.m.f", "src/m.py")], tests_touched=[])
-    assert [f.rule_id for f in builtin.test_gap(facts, Config())] == ["R008"]
+    assert [f.rule_id for f in builtin.test_gap(facts, config)] == ["R008"]
 
 
 def test_r008_silent_when_tests_touched_or_private() -> None:
+    config = Config(source_roots=["src"])
     with_tests = make_facts(symbols_added=[_sym("src.m.f", "src/m.py")],
                             tests_touched=["tests/test_m.py"])
     private = make_facts(symbols_added=[_sym("src.m._f", "src/m.py", public=False)])
     outside_src = make_facts(symbols_added=[_sym("scripts.f", "scripts/f.py")])
-    assert builtin.test_gap(with_tests, Config()) == []
-    assert builtin.test_gap(private, Config()) == []
-    assert builtin.test_gap(outside_src, Config()) == []
+    assert builtin.test_gap(with_tests, config) == []
+    assert builtin.test_gap(private, config) == []
+    assert builtin.test_gap(outside_src, config) == []
 
 
 # -- engine ------------------------------------------------------------------
@@ -257,7 +259,7 @@ def test_engine_orders_by_severity_then_rule() -> None:
         symbols_added=[_sym("src.m.f", "src/m.py")],
         tests_touched=[],
     )
-    findings = run_rules(facts, Config())
+    findings = run_rules(facts, Config(source_roots=["src"]))
     severities = [f.severity for f in findings]
     assert severities == sorted(severities, key=["high", "medium", "low", "info"].index)
     # high (R001) precedes medium (R004) precedes low (R008)

@@ -35,6 +35,37 @@ class RunResult:
     skip_reason: str | None = None
 
 
+# Top-level directories that hold Python but are never the "source" for R008.
+_NON_SOURCE_DIRS = {
+    "tests", "test", "docs", "doc", "examples", "example",
+    "scripts", "benchmarks", "bench",
+}
+
+
+def detect_source_roots(files: list[str], config: Config) -> list[str]:
+    """Infer source roots from a repo's tree when none are configured.
+
+    A top-level directory containing first-party Python is a source root; a
+    repo with modules at the root reports ``"."`` (flat layout).
+    """
+    tops: set[str] = set()
+    flat = False
+    for path in files:
+        if not path.endswith(".py") or config.is_skipped_path(path):
+            continue
+        parts = path.split("/")
+        if len(parts) == 1:
+            flat = True
+            continue
+        top = parts[0]
+        if top in _NON_SOURCE_DIRS or top.startswith("."):
+            continue
+        tops.add(top)
+    if tops:
+        return sorted(tops)
+    return ["."] if flat else []
+
+
 def skip_reason(commit: CommitData, config: Config) -> str | None:
     """Cheapest-first skip checks. Returns a reason string or None."""
     if config.skip_merge_commits and commit.is_merge:
@@ -68,6 +99,11 @@ def run_commit(
     if reason is not None:
         report = render_skip_report(commit.sha, commit.message_subject, reason)
         return RunResult(commit.sha, commit.message_subject, report, skipped=True, skip_reason=reason)
+
+    # Zero-config: infer source roots from the tree when the repo declares none.
+    if not config.source_roots:
+        detected = detect_source_roots(repo.list_tree_files(commit.sha), config)
+        config = config.model_copy(update={"source_roots": detected})
 
     facts = build_facts(repo, commit, config)
     findings = run_rules(facts, config)

@@ -1,0 +1,68 @@
+name: "CommitScope"
+description: "Deterministic, push-triggered commit analysis for Python repositories."
+author: "CommitScope"
+branding:
+  icon: "git-commit"
+  color: "purple"
+
+inputs:
+  sha:
+    description: "Commit SHA to analyze."
+    default: ${{ github.sha }}
+  repo:
+    description: "Path to the checked-out repository to analyze."
+    default: "."
+  config:
+    description: "Path to commitscope.yaml. Optional — analysis is zero-config if it is absent."
+    default: "commitscope.yaml"
+  publish:
+    description: "Post/refresh a commit comment (requires contents: write)."
+    default: "true"
+  no-llm:
+    description: "Disable the optional narration layer."
+    default: "false"
+  strict:
+    description: "Exit non-zero on failure. Default is observer mode (always exit 0)."
+    default: "false"
+  output:
+    description: "Directory for the report / facts / findings artifacts."
+    default: ".commitscope"
+  python-version:
+    description: "Python version used to run CommitScope."
+    default: "3.11"
+  api-key:
+    description: "Anthropic API key that enables the narration layer. Optional."
+    required: false
+  github-token:
+    description: "Token used to post the commit comment."
+    default: ${{ github.token }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ inputs.python-version }}
+
+    - name: Install CommitScope
+      shell: bash
+      # The action's own checkout carries the package; install it from there so
+      # the consumer repo needs nothing but this `uses:` line.
+      run: pip install --quiet "${{ github.action_path }}"
+
+    - name: Analyze commit
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ inputs.github-token }}
+        COMMITSCOPE_API_KEY: ${{ inputs.api-key }}
+      run: |
+        global=()
+        [ "${{ inputs.strict }}" = "true" ] && global+=(--strict)
+        global+=(--config "${{ inputs.config }}")
+
+        sub=(run --sha "${{ inputs.sha }}" --repo "${{ inputs.repo }}" --output "${{ inputs.output }}")
+        [ "${{ inputs.publish }}" = "true" ] && sub+=(--publish)
+        [ "${{ inputs.no-llm }}" = "true" ] && sub+=(--no-llm)
+
+        python -m commitscope.cli "${global[@]}" "${sub[@]}"
